@@ -1,4 +1,3 @@
-import { ThemeProvider } from './components/theme-provider'
 import { Header } from './components/layout/Header'
 import { ChatMessage } from './components/chat/ChatMessage'
 import { ChatInput } from './components/chat/ChatInput'
@@ -16,8 +15,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs'
 import { useFlashcards } from './hooks/useFlashcards'
 import { useErrorLog } from './hooks/useErrorLog'
 import { ChevronLeft, ChevronRight, RotateCcw, Trash2 } from 'lucide-react'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
 
 function App() {
+  const [activeTab, setActiveTab] = useState('chat')
   const {
     messages,
     isLoading,
@@ -79,19 +81,36 @@ function App() {
           <div className="flex-1 overflow-y-auto p-6">
             <div className="max-w-4xl mx-auto space-y-6">
               {messages.length === 0 ? (
-                <div className="text-center py-16">
-                  <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-12 shadow-2xl">
-                    <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center">
-                      <span className="text-3xl">💬</span>
+                <div className="text-center py-20">
+                  <div className="relative">
+                    {/* Gradient background with smooth edges */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-indigo-500/20 rounded-[2rem] blur-3xl" />
+                    <div className="relative bg-card/30 backdrop-blur-2xl rounded-[2rem] p-12 shadow-2xl border border-white/5">
+                      {/* Floating icon with glow effect */}
+                      <div className="relative mb-8">
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full blur-xl opacity-60 animate-pulse" />
+                        <div className="relative w-24 h-24 mx-auto rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center shadow-2xl">
+                          <span className="text-4xl filter drop-shadow-lg">💬</span>
+                        </div>
+                      </div>
+                      
+                      <h3 className="text-3xl font-bold text-foreground mb-6 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                        {mode === 'general' && 'Commencez une conversation en français!'}
+                        {mode === 'scenarios' && currentScenario && `Scénario: ${scenarios.find(s => s.id === currentScenario)?.title}`}
+                        {mode === 'teacher' && 'Mode Professeur - Je vais corriger vos erreurs!'}
+                      </h3>
+                      
+                      <p className="text-muted-foreground text-lg font-medium">
+                        Tapez votre message ou utilisez le microphone pour parler.
+                      </p>
+                      
+                      {/* Subtle decorative elements */}
+                      <div className="flex justify-center mt-8 space-x-2">
+                        <div className="w-2 h-2 bg-purple-400/40 rounded-full animate-pulse" />
+                        <div className="w-2 h-2 bg-blue-400/40 rounded-full animate-pulse" style={{animationDelay: '0.5s'}} />
+                        <div className="w-2 h-2 bg-indigo-400/40 rounded-full animate-pulse" style={{animationDelay: '1s'}} />
+                      </div>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-4">
-                      {mode === 'general' && 'Commencez une conversation en français!'}
-                      {mode === 'scenarios' && currentScenario && `Scénario: ${scenarios.find(s => s.id === currentScenario)?.title}`}
-                      {mode === 'teacher' && 'Mode Professeur - Je vais corriger vos erreurs!'}
-                    </h3>
-                    <p className="text-white/70 text-lg">
-                      Tapez votre message ou utilisez le microphone pour parler.
-                    </p>
                   </div>
                 </div>
               ) : (
@@ -113,24 +132,28 @@ function App() {
             </div>
           </div>
 
-          {/* Input Area with Enhanced Glassmorphism */}
+          {/* Input Area with Seamless Design */}
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-            <div className="relative backdrop-blur-2xl bg-white/5 border-t border-white/10">
+            <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+            <div className="relative backdrop-blur-2xl bg-card/20 border-t border-border/20">
               <div className="max-w-4xl mx-auto p-6">
-                <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-4 shadow-2xl">
-                  <ChatInput
-                    onSendMessage={sendMessage}
-                    isLoading={isLoading}
-                    placeholder={
-                      mode === 'scenarios' && currentScenario
-                        ? `Parlez dans le contexte: ${scenarios.find(s => s.id === currentScenario)?.title}`
-                        : 'Écrivez votre message en français...'
-                    }
-                    isCulturalTipsEnabled={settings.culturalTipsEnabled}
-                    onToggleCulturalTips={() => updateSetting('culturalTipsEnabled', !settings.culturalTipsEnabled)}
-                    scenario={mode}
-                  />
+                <div className="relative">
+                  {/* Subtle glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-indigo-500/10 rounded-[1.5rem] blur-2xl" />
+                  <div className="relative bg-card/40 backdrop-blur-xl rounded-[1.5rem] p-6 shadow-xl border border-white/5">
+                    <ChatInput
+                      onSendMessage={sendMessage}
+                      isLoading={isLoading}
+                      placeholder={
+                        mode === 'scenarios' && currentScenario
+                          ? `Parlez dans le contexte: ${scenarios.find(s => s.id === currentScenario)?.title}`
+                          : 'Écrivez votre message en français...'
+                      }
+                      isCulturalTipsEnabled={settings.culturalTipsEnabled}
+                      onToggleCulturalTips={() => updateSetting('culturalTipsEnabled', !settings.culturalTipsEnabled)}
+                      scenario={mode}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -162,43 +185,91 @@ function App() {
   }
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="polypal-ui-theme">
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950">
-        {/* Animated Background */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/30 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
-        </div>
-        
-        {/* Header with Glassmorphism */}
+      <div className="min-h-screen bg-background transition-colors duration-300">
+        {/* Header */}
         <div className="relative z-20">
           <Header
             mode={mode}
             onModeChange={handleModeChange}
-            onClearConversation={clearConversation}
+            onNewConversation={clearConversation}
           />
         </div>
         
         {/* Main Content */}
-        <main className="relative z-10 h-[calc(100vh-4rem)]">
-          <Tabs value={mode === 'general' || mode === 'scenarios' || mode === 'teacher' ? 'chat' : mode} className="h-full">
-            <TabsContent value="chat" className="h-full m-0">
-              {renderChatContent()}
-            </TabsContent>
-            <TabsContent value="flashcards" className="h-full m-0 overflow-y-auto">
-              {renderFlashcards()}
-            </TabsContent>
-            <TabsContent value="errors" className="h-full m-0 overflow-y-auto">
-              {renderErrorLog()}
-            </TabsContent>
-            <TabsContent value="settings" className="h-full m-0 overflow-y-auto">
-              <Settings />
-            </TabsContent>
-          </Tabs>
+        <main className="container mx-auto px-6 py-6">
+          <div className="max-w-5xl mx-auto">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <div className="relative mb-8 bg-muted/30 backdrop-blur-sm border-0 rounded-2xl p-1 h-12">
+                {/* Animated selector background */}
+                <motion.div
+                  className="absolute top-1 bottom-1 bg-white rounded-xl shadow-lg shadow-black/5"
+                  initial={false}
+                  animate={{
+                    left: activeTab === 'chat' ? '0.25rem' : 
+                          activeTab === 'flashcards' ? '25%' : 
+                          activeTab === 'errors' ? '50%' : '75%',
+                    width: 'calc(25% - 0.5rem)'
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30
+                  }}
+                />
+                
+                {/* Tab buttons */}
+                <div className="relative grid w-full grid-cols-4 h-full">
+                  <button
+                    onClick={() => setActiveTab('chat')}
+                    className={`relative z-10 rounded-xl font-medium transition-colors duration-200 ${
+                      activeTab === 'chat' ? 'text-black' : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    Chat
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('flashcards')}
+                    className={`relative z-10 rounded-xl font-medium transition-colors duration-200 ${
+                      activeTab === 'flashcards' ? 'text-black' : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    Flashcards
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('errors')}
+                    className={`relative z-10 rounded-xl font-medium transition-colors duration-200 ${
+                      activeTab === 'errors' ? 'text-black' : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    Errors
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('settings')}
+                    className={`relative z-10 rounded-xl font-medium transition-colors duration-200 ${
+                      activeTab === 'settings' ? 'text-black' : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    Settings
+                  </button>
+                </div>
+              </div>
+              
+              <TabsContent value="chat" className="h-full m-0">
+                {renderChatContent()}
+              </TabsContent>
+              <TabsContent value="flashcards" className="h-full m-0 overflow-y-auto">
+                {renderFlashcards()}
+              </TabsContent>
+              <TabsContent value="errors" className="h-full m-0 overflow-y-auto">
+                {renderErrorLog()}
+              </TabsContent>
+              <TabsContent value="settings" className="h-full m-0 overflow-y-auto">
+                <Settings />
+              </TabsContent>
+            </Tabs>
+          </div>
         </main>
       </div>
-    </ThemeProvider>
   )
 }
 

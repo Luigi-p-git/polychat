@@ -132,17 +132,16 @@ export function EnhancedFlashcards({
 
   if (!currentCard) {
     return (
-      <div className="relative min-h-full bg-gradient-to-br from-emerald-900/20 via-teal-900/20 to-cyan-900/20">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%139C92AC%22%20fill-opacity%3D%220.4%22%3E%3Cpath%20d%3D%22m56%2066%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
-        <div className="relative z-10 flex items-center justify-center min-h-full p-6">
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-12 text-center shadow-2xl">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center">
-              <BookOpen className="w-10 h-10 text-white" />
+      <div className="h-full flex flex-col bg-background">
+        <div className="flex-1 flex items-center justify-center p-8">
+          <div className="bg-card/50 backdrop-blur-sm border-0 rounded-3xl p-12 text-center shadow-lg max-w-md">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
+              <BookOpen className="w-10 h-10 text-primary" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-4">
+            <h3 className="text-2xl font-bold text-foreground mb-4">
               {activeTab === 'top300' ? 'Aucune carte Top 300 disponible' : 'Aucune carte personnelle'}
             </h3>
-            <p className="text-white/70">
+            <p className="text-muted-foreground">
               {activeTab === 'top300' 
                 ? 'Les cartes de base seront bientôt disponibles!' 
                 : 'Commencez une conversation et cliquez sur les mots français pour créer vos cartes personnalisées!'}
@@ -154,23 +153,22 @@ export function EnhancedFlashcards({
   }
 
   return (
-    <div className="relative min-h-full bg-gradient-to-br from-emerald-900/20 via-teal-900/20 to-cyan-900/20">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%139C92AC%22%20fill-opacity%3D%220.4%22%3E%3Cpath%20d%3D%22m56%2066%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204zm-12%200%204-4-4-4-4%204%204%204z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
-      
-      <div className="relative z-10 p-6 max-w-4xl mx-auto">
+    <div className="h-full flex flex-col bg-background">
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-5xl mx-auto p-8">
         {/* Header with Tabs */}
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-6 mb-6 shadow-2xl">
-          <div className="flex justify-between items-center mb-4">
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-6">
             <div>
-              <h2 className="text-3xl font-bold text-white mb-2">Cartes Flash</h2>
-              <p className="text-white/70">Révisez votre vocabulaire français</p>
+              <h2 className="text-3xl font-bold text-foreground mb-2">Cartes Flash</h2>
+              <p className="text-muted-foreground">Révisez votre vocabulaire français</p>
             </div>
-            <div className="flex space-x-2">
+            <div className="flex space-x-3">
               <Button 
                 onClick={toggleQuizMode} 
                 variant={quizMode ? "default" : "outline"}
                 size="lg" 
-                className="backdrop-blur-xl bg-white/10 border-white/20 hover:bg-white/20"
+                className="rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-sm border-0"
               >
                 {quizMode ? 'Mode Révision' : 'Mode Quiz'}
               </Button>
@@ -178,7 +176,7 @@ export function EnhancedFlashcards({
                 onClick={resetCurrentDeck} 
                 variant="outline" 
                 size="lg" 
-                className="backdrop-blur-xl bg-white/10 border-white/20 hover:bg-white/20"
+                className="rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-sm border-0"
               >
                 <RotateCcw className="h-5 w-5" />
               </Button>
@@ -186,17 +184,17 @@ export function EnhancedFlashcards({
           </div>
           
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 backdrop-blur-xl bg-white/10 border border-white/20">
+            <TabsList className="grid w-full grid-cols-2 bg-muted/30 backdrop-blur-sm border-0 rounded-2xl p-1 h-12">
               <TabsTrigger 
                 value="top300" 
-                className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/70"
+                className="rounded-xl transition-all duration-300 data-[state=active]:bg-background data-[state=active]:shadow-lg data-[state=active]:shadow-black/5 border-0 font-medium"
               >
                 <Star className="w-4 h-4 mr-2" />
                 Top 300 ({top300Cards.length})
               </TabsTrigger>
               <TabsTrigger 
                 value="personal" 
-                className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/70"
+                className="rounded-xl transition-all duration-300 data-[state=active]:bg-background data-[state=active]:shadow-lg data-[state=active]:shadow-black/5 border-0 font-medium"
               >
                 <BookOpen className="w-4 h-4 mr-2" />
                 Mis Palabras ({personalCards.length})
@@ -209,24 +207,24 @@ export function EnhancedFlashcards({
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activeTab}-${currentIndex}`}
-            initial={{ opacity: 0, rotateY: 90 }}
-            animate={{ opacity: 1, rotateY: 0 }}
-            exit={{ opacity: 0, rotateY: -90 }}
-            transition={{ duration: 0.3 }}
-            className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-8 mb-6 shadow-2xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="bg-card/50 backdrop-blur-sm border-0 rounded-3xl p-8 mb-8 shadow-lg"
           >
-            <div className="text-center space-y-6">
-              <div className="text-sm font-medium text-white/60 uppercase tracking-wider">
+            <div className="text-center space-y-8">
+              <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
                 Carte {currentIndex + 1} de {currentCards.length}
               </div>
               
               {/* French Word */}
-              <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
-                <h3 className="text-4xl font-bold text-white mb-2">
+              <div className="bg-muted/20 rounded-3xl p-8 border-0">
+                <h3 className="text-4xl font-bold text-foreground mb-3">
                   {currentCard.front}
                 </h3>
                 {currentCard.example && (
-                  <p className="text-white/60 italic text-sm">
+                  <p className="text-muted-foreground italic text-base">
                     "{currentCard.example}"
                   </p>
                 )}
@@ -234,15 +232,15 @@ export function EnhancedFlashcards({
 
               {/* Quiz Mode */}
               {quizMode && !isAnswered && (
-                <div className="space-y-4">
-                  <p className="text-white/80 text-lg">Choisissez la traduction correcte:</p>
+                <div className="space-y-6">
+                  <p className="text-foreground text-lg font-medium">Choisissez la traduction correcte:</p>
                   <div className="grid grid-cols-2 gap-4">
                     {quizOptions.map((option, index) => (
                       <Button
                         key={index}
                         onClick={() => handleQuizAnswer(option)}
                         variant="outline"
-                        className="h-16 text-lg backdrop-blur-xl bg-white/10 border-white/20 hover:bg-white/20 text-white transition-all duration-200"
+                        className="h-16 text-lg rounded-2xl border-0 bg-muted/30 hover:bg-muted/50 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-sm"
                       >
                         {option}
                       </Button>
@@ -253,22 +251,22 @@ export function EnhancedFlashcards({
 
               {/* Quiz Results */}
               {quizMode && isAnswered && (
-                <div className="space-y-4">
-                  <p className="text-white/80 text-lg">Résultat:</p>
+                <div className="space-y-6">
+                  <p className="text-foreground text-lg font-medium">Résultat:</p>
                   <div className="grid grid-cols-2 gap-4">
                     {quizOptions.map((option, index) => {
                       const isCorrect = option === currentCard.back
                       const isSelected = option === selectedAnswer
-                      let buttonClass = "h-16 text-lg backdrop-blur-xl border-2 transition-all duration-300"
+                      let buttonClass = "h-16 text-lg rounded-2xl border-0 transition-all duration-300"
                       
                       if (isSelected && isCorrect) {
-                        buttonClass += " bg-green-500/30 border-green-400 text-green-200"
+                        buttonClass += " bg-green-500/20 text-green-600 dark:text-green-400"
                       } else if (isSelected && !isCorrect) {
-                        buttonClass += " bg-red-500/30 border-red-400 text-red-200"
+                        buttonClass += " bg-red-500/20 text-red-600 dark:text-red-400"
                       } else if (!isSelected && isCorrect) {
-                        buttonClass += " bg-green-500/20 border-green-400/50 text-green-300"
+                        buttonClass += " bg-green-500/10 text-green-600 dark:text-green-400"
                       } else {
-                        buttonClass += " bg-white/10 border-white/20 text-white/50"
+                        buttonClass += " bg-muted/30 text-muted-foreground"
                       }
                       
                       return (
@@ -282,7 +280,7 @@ export function EnhancedFlashcards({
                             <span>{option}</span>
                             {isSelected && isCorrect && <Check className="w-5 h-5" />}
                             {isSelected && !isCorrect && <X className="w-5 h-5" />}
-                            {!isSelected && isCorrect && <Check className="w-5 h-5 text-green-400" />}
+                            {!isSelected && isCorrect && <Check className="w-5 h-5" />}
                           </div>
                         </Button>
                       )
@@ -291,8 +289,8 @@ export function EnhancedFlashcards({
                   <div className="text-center">
                     <p className={`text-lg font-semibold ${
                       selectedAnswer === currentCard.back 
-                        ? 'text-green-300' 
-                        : 'text-red-300'
+                        ? 'text-green-600 dark:text-green-400' 
+                        : 'text-red-600 dark:text-red-400'
                     }`}>
                       {selectedAnswer === currentCard.back 
                         ? '¡Correcto! 🎉' 
@@ -307,9 +305,9 @@ export function EnhancedFlashcards({
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-2xl p-6 border border-emerald-400/30"
+                  className="bg-primary/10 rounded-3xl p-6 border-0"
                 >
-                  <h4 className="text-2xl font-bold text-emerald-200 mb-2">
+                  <h4 className="text-2xl font-bold text-primary mb-2">
                     {currentCard.back}
                   </h4>
                 </motion.div>
@@ -321,7 +319,7 @@ export function EnhancedFlashcards({
                   onClick={previousCard}
                   variant="outline"
                   size="lg"
-                  className="backdrop-blur-xl bg-white/10 border-white/20 hover:bg-white/20"
+                  className="rounded-2xl border-0 bg-muted/30 hover:bg-muted/50 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-sm"
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </Button>
@@ -331,7 +329,7 @@ export function EnhancedFlashcards({
                     onClick={toggleAnswer}
                     variant="default"
                     size="lg"
-                    className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
+                    className="rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-sm"
                   >
                     {showAnswer ? 'Masquer' : 'Révéler'}
                   </Button>
@@ -341,7 +339,7 @@ export function EnhancedFlashcards({
                   onClick={nextCard}
                   variant="outline"
                   size="lg"
-                  className="backdrop-blur-xl bg-white/10 border-white/20 hover:bg-white/20"
+                  className="rounded-2xl border-0 bg-muted/30 hover:bg-muted/50 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-sm"
                 >
                   <ChevronRight className="h-5 w-5" />
                 </Button>
@@ -351,7 +349,7 @@ export function EnhancedFlashcards({
                     onClick={() => onRemoveCard(currentCard.id)}
                     variant="outline"
                     size="lg"
-                    className="backdrop-blur-xl bg-red-500/20 border-red-400/30 text-red-200 hover:bg-red-500/30"
+                    className="rounded-2xl border-0 bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-sm"
                   >
                     <Trash2 className="h-5 w-5" />
                   </Button>
@@ -362,21 +360,22 @@ export function EnhancedFlashcards({
         </AnimatePresence>
 
         {/* Progress Bar */}
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-xl p-4 shadow-xl">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-white/70 text-sm font-medium">
+        <div className="bg-card/50 backdrop-blur-sm border-0 rounded-3xl p-6 shadow-lg">
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-muted-foreground text-sm font-medium">
               Progrès: {currentIndex + 1} / {currentCards.length}
             </span>
-            <span className="text-white/70 text-sm">
+            <span className="text-muted-foreground text-sm font-medium">
               {Math.round(((currentIndex + 1) / currentCards.length) * 100)}%
             </span>
           </div>
-          <div className="w-full bg-white/10 rounded-full h-2">
+          <div className="w-full bg-muted/30 rounded-full h-3">
             <div 
-              className="bg-gradient-to-r from-emerald-500 to-teal-500 h-2 rounded-full transition-all duration-300"
+              className="bg-primary h-3 rounded-full transition-all duration-500 ease-out"
               style={{ width: `${((currentIndex + 1) / currentCards.length) * 100}%` }}
             />
           </div>
+        </div>
         </div>
       </div>
     </div>
