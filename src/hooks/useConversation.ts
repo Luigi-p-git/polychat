@@ -161,6 +161,7 @@ export function useConversation() {
     mode,
     currentScenario,
     sendMessage,
+    addMessage,
     switchMode,
     clearConversation
   }

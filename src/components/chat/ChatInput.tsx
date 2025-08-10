@@ -118,7 +118,7 @@ export function ChatInput({
                       : 'bg-gradient-to-r from-blue-400 to-cyan-400'
                   }`}>
                     {currentScenario ? (
-                      <Theater className="h-4 w-4 text-white" />
+                      <span className="text-lg">{scenarios.find(s => s.id === currentScenario)?.icon || '🎭'}</span>
                     ) : (
                       <Sparkles className="h-4 w-4 text-white" />
                     )}
@@ -168,7 +168,7 @@ export function ChatInput({
                         type="button"
                         variant="ghost"
                         onClick={() => handleScenarioSelect(scenario.id)}
-                        className={`w-full justify-start h-10 rounded-lg transition-all duration-200 ${
+                        className={`w-full justify-start h-12 rounded-lg transition-all duration-200 ${
                           currentScenario === scenario.id 
                             ? 'bg-purple-500/20 text-purple-200 border border-purple-400/30' 
                             : 'text-white/70 hover:text-white hover:bg-white/10'
@@ -177,11 +177,14 @@ export function ChatInput({
                         <div className="flex items-center space-x-3">
                           <div className="relative">
                             <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-sm opacity-75" />
-                            <div className="relative h-6 w-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
-                              <Theater className="h-3 w-3 text-white" />
+                            <div className="relative h-8 w-8 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+                              <span className="text-lg">{scenario.icon}</span>
                             </div>
                           </div>
-                          <span className="font-medium">{scenario.title}</span>
+                          <div className="flex-1">
+                            <span className="font-medium block">{scenario.title}</span>
+                            <span className="text-white/60 text-xs">{scenario.description}</span>
+                          </div>
                         </div>
                       </Button>
                     ))}

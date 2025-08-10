@@ -26,11 +26,12 @@ function App() {
     mode,
     currentScenario,
     sendMessage,
+    addMessage,
     clearConversation,
     switchMode
   } = useConversation()
 
-  const { scenarios, selectScenario, clearScenario } = useScenarios()
+  const { scenarios, selectScenario, clearScenario, generateScenarioIntroduction } = useScenarios()
   const { settings, updateSetting } = useSettings()
   const {
     allCards,
@@ -138,7 +139,24 @@ function App() {
                       onToggleCulturalTips={() => updateSetting('culturalTipsEnabled', !settings.culturalTipsEnabled)}
                       scenario={mode}
                       scenarios={scenarios}
-                      onSelectScenario={(scenarioId) => scenarioId && selectScenario(scenarioId)}
+                      onSelectScenario={(scenarioId) => {
+                        if (scenarioId) {
+                          selectScenario(scenarioId)
+                          // Generate and add AI-initiated roleplay prompt
+                          const introduction = generateScenarioIntroduction(scenarioId)
+                          if (introduction) {
+                            // Add the AI introduction as an assistant message
+                            const aiMessage = {
+                              id: Date.now().toString(),
+                              content: introduction,
+                              role: 'assistant' as const,
+                              timestamp: new Date(),
+                              messageType: 'response' as const
+                            }
+                            addMessage(aiMessage)
+                          }
+                        }
+                      }}
                       currentScenario={currentScenario}
                     />
                   </div>
