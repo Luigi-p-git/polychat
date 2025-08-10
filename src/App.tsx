@@ -57,21 +57,6 @@ function App() {
   }
 
   const renderChatContent = () => {
-    if (mode === 'scenarios' && !currentScenario) {
-      return (
-        <div className="relative min-h-full bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%239C92AC%22%20fill-opacity%3D%220.05%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30" />
-          <div className="relative z-10 backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl m-6 p-8 shadow-2xl">
-            <ScenarioSelector
-              scenarios={scenarios}
-              onSelectScenario={selectScenario}
-              selectedScenario={currentScenario}
-            />
-          </div>
-        </div>
-      )
-    }
-
     return (
       <div className="relative h-full bg-gradient-to-br from-slate-900/50 via-purple-900/30 to-slate-900/50">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%220%200%2040%2040%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M20%2020c0-5.5-4.5-10-10-10s-10%204.5-10%2010%204.5%2010%2010%2010%2010-4.5%2010-10zm10%200c0-5.5-4.5-10-10-10s-10%204.5-10%2010%204.5%2010%2010%2010%2010-4.5%2010-10z%22/%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
@@ -145,13 +130,16 @@ function App() {
                       onSendMessage={sendMessage}
                       isLoading={isLoading}
                       placeholder={
-                        mode === 'scenarios' && currentScenario
+                        currentScenario
                           ? `Parlez dans le contexte: ${scenarios.find(s => s.id === currentScenario)?.title}`
                           : 'Écrivez votre message en français...'
                       }
                       isCulturalTipsEnabled={settings.culturalTipsEnabled}
                       onToggleCulturalTips={() => updateSetting('culturalTipsEnabled', !settings.culturalTipsEnabled)}
                       scenario={mode}
+                      scenarios={scenarios}
+                      onSelectScenario={(scenarioId) => scenarioId && selectScenario(scenarioId)}
+                      currentScenario={currentScenario}
                     />
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { MessageCircle, BookOpen, AlertCircle, GraduationCap, Sparkles, Trash2 } from 'lucide-react'
+import { MessageCircle, AlertCircle, GraduationCap, Sparkles, Trash2 } from 'lucide-react'
 import type { ConversationMode } from '../../types'
 
 interface HeaderProps {
@@ -39,15 +39,7 @@ export function Header({
                 <MessageCircle className="w-4 h-4 mr-2" />
                 General
               </Button>
-              <Button
-                variant={mode === 'scenarios' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => onModeChange('scenarios')}
-                className="rounded-xl h-9 px-4 font-medium transition-all duration-200 border-0"
-              >
-                <BookOpen className="w-4 h-4 mr-2" />
-                Scenarios
-              </Button>
+
               <Button
                 variant={mode === 'teacher' ? 'default' : 'ghost'}
                 size="sm"

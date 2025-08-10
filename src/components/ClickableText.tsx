@@ -697,6 +697,7 @@ export function ClickableText({ text, onWordClick }: ClickableTextProps) {
     'minuit': 'medianoche',
     'aube': 'amanecer',
     'aujourd\'hui': 'hoy',
+    'hui': 'hoy',
     'hier': 'ayer',
     'demain': 'mañana',
     'avant-hier': 'anteayer',
@@ -810,15 +811,18 @@ export function ClickableText({ text, onWordClick }: ClickableTextProps) {
       const scrollY = window.pageYOffset || document.documentElement.scrollTop
       
       const getPopupPosition = () => {
+        const viewportWidth = window.innerWidth
+        const popupWidth = 320 // Estimated popup width
+        
         if (isSafari && containerRect) {
           return {
-            x: rect.left - containerRect.left + rect.width / 2,
-            y: Math.max(rect.top - containerRect.top - 10, 50)
+            x: Math.min(rect.right - containerRect.left + 20, viewportWidth - popupWidth - 20),
+            y: Math.max(rect.top - containerRect.top, 50)
           }
         } else {
           return {
-            x: rect.left + scrollX + rect.width / 2,
-            y: Math.max(rect.top + scrollY - 10, 50)
+            x: Math.min(rect.right + scrollX + 20, viewportWidth - popupWidth - 20),
+            y: Math.max(rect.top + scrollY, 50)
           }
         }
       }
@@ -840,15 +844,18 @@ export function ClickableText({ text, onWordClick }: ClickableTextProps) {
         const scrollY = window.pageYOffset || document.documentElement.scrollTop
         
         const getPopupPosition = () => {
+          const viewportWidth = window.innerWidth
+          const popupWidth = 320 // Estimated popup width
+          
           if (isSafari && containerRect) {
             return {
-              x: rect.left - containerRect.left + rect.width / 2,
-              y: Math.max(rect.top - containerRect.top - 10, 50)
+              x: Math.min(rect.right - containerRect.left + 20, viewportWidth - popupWidth - 20),
+              y: Math.max(rect.top - containerRect.top, 50)
             }
           } else {
             return {
-              x: rect.left + scrollX + rect.width / 2,
-              y: Math.max(rect.top + scrollY - 10, 50)
+              x: Math.min(rect.right + scrollX + 20, viewportWidth - popupWidth - 20),
+              y: Math.max(rect.top + scrollY, 50)
             }
           }
         }
@@ -1088,7 +1095,7 @@ export function ClickableText({ text, onWordClick }: ClickableTextProps) {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            className={isSafari ? "absolute z-40 pointer-events-none" : "fixed z-40 pointer-events-none"}
+            className={isSafari ? "absolute z-[99999] pointer-events-none" : "fixed z-[99999] pointer-events-none"}
             style={{
               left: isSafari 
                 ? Math.max(10, Math.min(hoverTooltip.position.x, (containerRef.current?.getBoundingClientRect().width || window.innerWidth) - 200))
@@ -1098,7 +1105,7 @@ export function ClickableText({ text, onWordClick }: ClickableTextProps) {
                 : Math.max(10, hoverTooltip.position.y),
               transform: 'translate(-50%, 0)',
               WebkitTransform: 'translate(-50%, 0)', // Safari fallback
-              zIndex: 9999 // Ensure it's on top
+              zIndex: 99999 // Ensure it's on top
             }}
 
           >
@@ -1128,26 +1135,21 @@ export function ClickableText({ text, onWordClick }: ClickableTextProps) {
           <>
             {/* Backdrop */}
             <div 
-              className="fixed inset-0 z-40" 
+              className="fixed inset-0 z-[99998]" 
               onClick={closePopup}
             />
             
             {/* Popup */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: 10 }}
-              className={isSafari ? "absolute z-50" : "fixed z-50"}
+              initial={{ opacity: 0, x: 20, scale: 0.95 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 20, scale: 0.95 }}
+              transition={{ type: "spring", damping: 20, stiffness: 300 }}
+              className={isSafari ? "absolute z-[99999]" : "fixed z-[99999]"}
               style={{
-                left: isSafari 
-                  ? Math.max(10, Math.min(popup.position.x, (containerRef.current?.getBoundingClientRect().width || window.innerWidth) - 300))
-                  : popup.position.x,
-                top: isSafari 
-                  ? Math.max(10, popup.position.y)
-                  : popup.position.y,
-                transform: 'translate(-50%, -100%)',
-                WebkitTransform: 'translate(-50%, -100%)', // Safari fallback
-                zIndex: 9999
+                left: popup.position.x,
+                top: popup.position.y,
+                zIndex: 99999
               }}
             >
               <Card className="backdrop-blur-xl bg-white/10 border-white/20 shadow-2xl max-w-sm">

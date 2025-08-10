@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Mic, MicOff, Send, Loader2, Lightbulb } from 'lucide-react'
+import { Mic, MicOff, Send, Loader2, Lightbulb, Theater, ChevronDown, Sparkles } from 'lucide-react'
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition'
 import { motion, AnimatePresence } from 'framer-motion'
+import type { Scenario } from '../../types'
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void
@@ -12,6 +13,9 @@ interface ChatInputProps {
   isCulturalTipsEnabled?: boolean
   onToggleCulturalTips?: () => void
   scenario?: string
+  scenarios?: Scenario[]
+  onSelectScenario?: (scenarioId: string | null) => void
+  currentScenario?: string | null
 }
 
 export function ChatInput({ 
@@ -20,9 +24,13 @@ export function ChatInput({
   placeholder = "Écris en français...",
   isCulturalTipsEnabled = false,
   onToggleCulturalTips,
-  scenario
+  scenario,
+  scenarios = [],
+  onSelectScenario,
+  currentScenario
 }: ChatInputProps) {
   const [message, setMessage] = useState('')
+  const [showScenarios, setShowScenarios] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   
   const {
@@ -74,8 +82,117 @@ export function ChatInput({
     }
   }
 
+  const handleScenarioSelect = (scenarioId: string | null) => {
+    onSelectScenario?.(scenarioId)
+    setShowScenarios(false)
+  }
+
+  const getCurrentScenarioTitle = () => {
+    if (!currentScenario) return 'Conversación General'
+    const scenario = scenarios.find(s => s.id === currentScenario)
+    return scenario?.title || 'Conversación General'
+  }
+
   return (
     <div className="relative">
+      {/* Scenario Selector */}
+      {scenarios.length > 0 && (
+        <div className="mb-4">
+          <div className="relative">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setShowScenarios(!showScenarios)}
+              className="w-full justify-between h-12 rounded-[1rem] border-white/10 bg-card/40 backdrop-blur-xl text-white hover:bg-card/60 hover:border-white/20 transition-all duration-300"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <div className={`absolute inset-0 rounded-full blur-sm opacity-75 ${
+                    currentScenario 
+                      ? 'bg-gradient-to-r from-purple-400 to-pink-400 animate-pulse' 
+                      : 'bg-gradient-to-r from-blue-400 to-cyan-400'
+                  }`} />
+                  <div className={`relative h-8 w-8 rounded-full flex items-center justify-center shadow-lg ${
+                    currentScenario 
+                      ? 'bg-gradient-to-r from-purple-400 to-pink-400' 
+                      : 'bg-gradient-to-r from-blue-400 to-cyan-400'
+                  }`}>
+                    {currentScenario ? (
+                      <Theater className="h-4 w-4 text-white" />
+                    ) : (
+                      <Sparkles className="h-4 w-4 text-white" />
+                    )}
+                  </div>
+                </div>
+                <span className="font-medium">{getCurrentScenarioTitle()}</span>
+              </div>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${
+                showScenarios ? 'rotate-180' : ''
+              }`} />
+            </Button>
+            
+            <AnimatePresence>
+              {showScenarios && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-0 right-0 mt-2 z-50 backdrop-blur-xl bg-card/90 border border-white/20 rounded-[1rem] shadow-2xl overflow-hidden"
+                >
+                  <div className="p-2 space-y-1">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={() => handleScenarioSelect(null)}
+                      className={`w-full justify-start h-10 rounded-lg transition-all duration-200 ${
+                        !currentScenario 
+                          ? 'bg-blue-500/20 text-blue-200 border border-blue-400/30' 
+                          : 'text-white/70 hover:text-white hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full blur-sm opacity-75" />
+                          <div className="relative h-6 w-6 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center justify-center">
+                            <Sparkles className="h-3 w-3 text-white" />
+                          </div>
+                        </div>
+                        <span className="font-medium">Conversación General</span>
+                      </div>
+                    </Button>
+                    
+                    {scenarios.map((scenario) => (
+                      <Button
+                        key={scenario.id}
+                        type="button"
+                        variant="ghost"
+                        onClick={() => handleScenarioSelect(scenario.id)}
+                        className={`w-full justify-start h-10 rounded-lg transition-all duration-200 ${
+                          currentScenario === scenario.id 
+                            ? 'bg-purple-500/20 text-purple-200 border border-purple-400/30' 
+                            : 'text-white/70 hover:text-white hover:bg-white/10'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="relative">
+                            <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-sm opacity-75" />
+                            <div className="relative h-6 w-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+                              <Theater className="h-3 w-3 text-white" />
+                            </div>
+                          </div>
+                          <span className="font-medium">{scenario.title}</span>
+                        </div>
+                      </Button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      )}
+      
       <form onSubmit={handleSubmit} className="relative flex items-center space-x-4">
         <div className="flex-1 relative">
           {/* Subtle glow effect for input */}
@@ -87,7 +204,7 @@ export function ChatInput({
             onKeyPress={handleKeyPress}
             placeholder={isListening ? "Escuchando..." : placeholder}
             disabled={isLoading || isListening}
-            className="relative w-full bg-card/40 border border-white/5 text-foreground placeholder:text-muted-foreground rounded-[1.25rem] px-6 py-4 pr-16 backdrop-blur-xl focus:bg-card/60 focus:border-white/10 transition-all duration-300 text-base h-16 shadow-xl"
+            className="relative w-full bg-card/40 border border-white/5 text-foreground placeholder:text-muted-foreground rounded-[1.25rem] px-6 py-4 pr-16 backdrop-blur-xl focus:bg-card/60 focus:border-white/10 transition-all duration-300 text-base h-16 shadow-xl tracking-normal"
           />
             
             {/* Voice input button */}
